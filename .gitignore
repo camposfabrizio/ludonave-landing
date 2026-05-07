@@ -1,0 +1,13 @@
+# Arquivos desnecessários para a landing page
+uploads/
+ui_kits/
+preview/
+pdf_extractor.html
+pdf_viewer.html
+Instagram Post Skill.md
+SKILL.md
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log

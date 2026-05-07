@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUDONAVE — Aluguel de Jogos de Tabuleiro · Navegantes, Penha, Piçarras e Itajaí</title>
+<meta name="description" content="Alugue jogos de tabuleiro modernos com delivery e retirada em Navegantes, Penha, Balneário Piçarras e Itajaí. Diversão analógica direto na sua casa.">
+<meta name="theme-color" content="#012030">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="icon" href="../assets/logo%20icone.png" type="image/png">
+<style>
+/* ============================================================
+   RESET + BASE
+   ============================================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--color-navy);
+  color: var(--fg-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
+
+/* ============================================================
+   COMMON UTILITIES
+   ============================================================ */
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-pixel);
+  font-size: 9px; color: var(--color-yellow);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.eyebrow::after {
+  content: ''; height: 2px; width: 60px;
+  background: linear-gradient(to right, rgba(242,191,39,0.6), transparent);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 3px solid #000f1a; border-radius: 6px;
+  padding: 14px 24px;
+  font-family: var(--font-display);
+  font-size: 17px; letter-spacing: 0.04em;
+  box-shadow: 4px 4px 0 #000f1a;
+  transition: transform 100ms ease-out, box-shadow 100ms ease-out, filter 150ms;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.25);
+  min-height: 48px;
+}
+.btn:hover, .btn:focus-visible { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #000f1a; outline: none; }
+.btn:focus-visible { filter: brightness(1.1); }
+
+.btn--primary { background: var(--color-red); color: white; }
+.btn--yellow { background: var(--color-yellow); color: var(--color-navy); text-shadow: none; }
+.btn--wpp { background: var(--color-green); color: white; }
+.btn--outline {
+  background: transparent; color: white;
+  border: 2.5px solid rgba(255,255,255,0.55);
+  box-shadow: none;
+  font-family: var(--font-ui); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.btn--outline:hover { background: rgba(255,255,255,0.08); transform: none; box-shadow: none; }
+
+.cursor-pixel {
+  display: inline-block; width: 10px; height: 16px;
+  background: currentColor;
+  margin-left: 4px;
+  animation: blink 1s steps(1) infinite;
+  image-rendering: pixelated;
+  vertical-align: -2px;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(1, 15, 24, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid rgba(242,191,39,0.18);
+}
+.site-header__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 20px;
+  max-width: 1200px; margin: 0 auto;
+}
+.site-header__logo { display: flex; align-items: center; gap: 10px; }
+.site-header__logo img { height: 40px; width: auto; }
+.site-header__logo span {
+  font-family: var(--font-display);
+  font-size: 26px; line-height: 1;
+  color: var(--color-red);
+  letter-spacing: 0.04em;
+}
+.site-header__nav { display: none; gap: 24px; }
+.site-header__nav a {
+  font-family: var(--font-ui); font-weight: 600;
+  font-size: 13px; text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.75);
+  transition: color 150ms;
+}
+.site-header__nav a:hover { color: var(--color-yellow); }
+.site-header__cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--color-green); color: white;
+  border: 2px solid #000f1a; border-radius: 6px;
+  padding: 8px 14px;
+  font-family: var(--font-ui); font-weight: 700; font-size: 12px;
+  letter-spacing: 0.04em;
+  box-shadow: 3px 3px 0 #000f1a;
+  transition: transform 100ms, box-shadow 100ms;
+}
+.site-header__cta:hover { transform: translate(1px,1px); box-shadow: 2px 2px 0 #000f1a; }
+@media (min-width: 768px) {
+  .site-header__nav { display: flex; }
+  .site-header__logo img { height: 44px; }
+  .site-header__logo span { font-size: 30px; }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: calc(100vh - 60px);
+  padding: 40px 20px 60px;
+  display: flex; align-items: center;
+  overflow: hidden;
+  background: var(--color-navy);
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, white, transparent),
+    radial-gradient(1.5px 1.5px at 60px 80px, var(--color-yellow), transparent),
+    radial-gradient(1px 1px at 110px 20px, var(--color-blue), transparent),
+    radial-gradient(2px 2px at 160px 90px, white, transparent),
+    radial-gradient(1.5px 1.5px at 220px 50px, var(--color-purple), transparent),
+    radial-gradient(1px 1px at 30px 130px, white, transparent),
+    radial-gradient(2px 2px at 100px 160px, var(--color-yellow), transparent),
+    radial-gradient(1px 1px at 200px 130px, var(--color-blue), transparent);
+  background-size: 240px 200px;
+  opacity: 0.55;
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 70% 40%, rgba(101,36,191,0.18), transparent 60%);
+}
+.hero__inner {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1fr; gap: 12px;
+  width: 100%; max-width: 1200px; margin: 0 auto;
+  align-items: center;
+}
+.hero__copy { text-align: center; }
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 11vw, 80px);
+  line-height: 0.95;
+  color: var(--color-yellow);
+  text-shadow: 4px 4px 0 var(--color-red), 8px 8px 0 #000f1a;
+  letter-spacing: 0.01em;
+  margin-bottom: 16px;
+}
+.hero__title .accent { color: white; }
+.hero__sub {
+  font-family: var(--font-ui);
+  font-size: 16px; font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  max-width: 540px; margin: 0 auto 28px;
+  line-height: 1.55;
+}
+.hero__sub strong { color: var(--color-yellow); font-weight: 700; }
+.hero__ctas { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.hero__galaxy {
+  position: absolute;
+  width: 280px; height: 280px;
+  top: -40px; left: -80px;
+  opacity: 0.35;
+  animation: spin-slow 60s linear infinite;
+  pointer-events: none;
+}
+.hero__meteor {
+  position: absolute;
+  width: 90px;
+  top: 12%; right: -10px;
+  transform: rotate(-25deg);
+  opacity: 0.85;
+  image-rendering: pixelated;
+  animation: meteor-fall 8s ease-in-out infinite;
+  pointer-events: none;
+}
+.hero__visual {
+  position: relative;
+  display: flex; justify-content: center; align-items: center;
+  min-height: 240px;
+  margin-top: -8px;
+}
+.hero__mascot {
+  position: relative; z-index: 3;
+  width: 170px;
+  image-rendering: pixelated;
+  animation: float 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 24px rgba(242,191,39,0.35));
+}
+.hero__saturn {
+  position: absolute; z-index: 1;
+  width: 70px;
+  top: 14%; left: 8%;
+  image-rendering: pixelated;
+  opacity: 0.95;
+  animation: float 6s ease-in-out infinite;
+}
+.hero__bluep {
+  position: absolute; z-index: 1;
+  width: 80px;
+  bottom: 12%; right: 8%;
+  image-rendering: pixelated;
+  opacity: 0.9;
+  animation: float 4.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -10px; }
+}
+@keyframes spin-slow { to { rotate: 360deg; } }
+@keyframes meteor-fall {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: -20px 14px; }
+}
+
+@media (min-width: 768px) {
+  .hero { padding: 60px 24px; }
+  .hero__inner { grid-template-columns: 1.2fr 1fr; gap: 48px; }
+  .hero__copy { text-align: left; }
+  .hero__sub { margin: 0 0 32px; }
+  .hero__ctas { flex-direction: row; align-items: flex-start; flex-wrap: wrap; }
+  .hero__visual { min-height: 460px; margin-top: 0; }
+  .hero__mascot { width: 280px; }
+  .hero__saturn { width: 140px; top: 0; left: -10px; }
+  .hero__bluep { width: 170px; bottom: -10px; right: -10px; }
+  .hero__galaxy { width: 360px; height: 360px; top: -60px; left: -120px; opacity: 0.25; }
+  .hero__meteor { width: 130px; top: 8%; right: 5%; }
+}
+
+/* ============================================================
+   MISSION
+   ============================================================ */
+.mission {
+  position: relative;
+  padding: 72px 20px;
+  background: var(--color-navy-light);
+  overflow: hidden;
+}
+.mission::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: url('../assets/mascote-cabeca.png');
+  background-size: 110px;
+  background-repeat: space;
+  opacity: 0.05;
+  transform: rotate(-6deg) scale(1.05);
+}
+.mission::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: var(--texture-halftone-light);
+  background-size: 12px 12px;
+  opacity: 0.4;
+}
+.mission__inner {
+  position: relative; z-index: 2;
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr; gap: 14px;
+  align-items: center;
+}
+.mission__visual {
+  position: relative;
+  display: flex; justify-content: center; align-items: center;
+  min-height: 200px;
+  padding: 8px 12px;
+}
+.mission__hero {
+  position: relative; z-index: 3;
+  width: 150px;
+  filter: drop-shadow(0 0 28px rgba(101,36,191,0.55)) drop-shadow(0 8px 16px rgba(0,0,0,0.4));
+  animation: float 4s ease-in-out infinite;
+}
+.mission__planet {
+  position: absolute; z-index: 1;
+  width: 90px;
+  top: 18%; right: 14%;
+  opacity: 0.45;
+  image-rendering: pixelated;
+}
+.mission__meeple {
+  position: absolute; z-index: 2;
+  width: 50px;
+  bottom: 14%; right: 16%;
+  image-rendering: pixelated;
+  transform: rotate(8deg);
+  opacity: 0.95;
+  filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.4));
+}
+.mission__copy h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 7vw, 48px);
+  line-height: 1; color: white;
+  text-shadow: 3px 3px 0 var(--color-red);
+  letter-spacing: 0.01em;
+  margin-bottom: 18px;
+}
+.mission__copy h2 span { color: var(--color-yellow); }
+.mission__copy p {
+  font-family: var(--font-body);
+  font-size: 16px; line-height: 1.65;
+  color: rgba(255,255,255,0.86);
+  margin-bottom: 14px;
+}
+.mission__copy p strong { color: var(--color-yellow); font-weight: 700; }
+
+.mission__bens {
+  display: grid; grid-template-columns: 1fr; gap: 10px;
+  margin-top: 22px;
+}
+.mission__bem {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px 14px;
+  background: rgba(1,32,48,0.55);
+  border-left: 3px solid var(--color-yellow);
+  border-radius: 4px;
+}
+.mission__bem .ico {
+  font-size: 22px; line-height: 1;
+  flex-shrink: 0;
+}
+.mission__bem h4 {
+  font-family: var(--font-ui); font-weight: 700;
+  font-size: 14px; color: white;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+.mission__bem p {
+  font-family: var(--font-body);
+  font-size: 13px; line-height: 1.45;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+}
+.mission__count {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  margin-top: 6px;
+  padding: 10px 16px;
+  background: var(--color-yellow); color: var(--color-navy);
+  border: 2.5px solid #000f1a;
+  border-radius: 6px;
+  box-shadow: 3px 3px 0 #000f1a;
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: transform 100ms, box-shadow 100ms;
+  cursor: pointer;
+}
+.mission__count:hover, .mission__count:focus-visible {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #000f1a;
+  outline: none;
+  filter: brightness(1.05);
+}
+.mission__count small {
+  font-family: var(--font-ui); font-weight: 700; font-size: 11px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .mission { padding: 96px 24px; }
+  .mission__inner { grid-template-columns: 1fr 1.2fr; gap: 56px; }
+  .mission__visual { min-height: 320px; padding: 24px 16px; }
+  .mission__hero { width: 240px; }
+  .mission__planet { width: 180px; top: 8%; right: 4%; }
+  .mission__meeple { width: 90px; }
+  .mission__bens { grid-template-columns: 1fr 1fr; gap: 12px; }
+}
+
+/* ============================================================
+   HOW IT WORKS — MANUAL DE VOO
+   ============================================================ */
+.how {
+  position: relative;
+  padding: 72px 20px;
+  background: var(--color-navy);
+  overflow: hidden;
+}
+.how::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 40px 50px, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 120px 90px, var(--color-yellow), transparent),
+    radial-gradient(1.5px 1.5px at 200px 40px, var(--color-blue), transparent);
+  background-size: 240px 180px;
+  opacity: 0.4;
+}
+.how__earth {
+  position: absolute;
+  width: 110px; bottom: 6%; right: 2%;
+  opacity: 0.85;
+  image-rendering: pixelated;
+  animation: float 5s ease-in-out infinite;
+  pointer-events: none;
+}
+.how__rocket {
+  position: absolute;
+  width: 80px; top: 8%; left: 3%;
+  opacity: 0.85;
+  image-rendering: pixelated;
+  transform: rotate(-15deg);
+  animation: float 4s ease-in-out infinite;
+  pointer-events: none;
+}
+.how__inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; }
+.how__head { text-align: center; margin-bottom: 40px; }
+.how__head h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 7vw, 48px);
+  line-height: 1; color: white;
+  text-shadow: 3px 3px 0 var(--color-red);
+  margin-bottom: 8px;
+}
+.how__head h2 span { color: var(--color-yellow); }
+.how__head p {
+  font-family: var(--font-body); font-size: 15px;
+  color: rgba(255,255,255,0.7);
+  max-width: 540px; margin: 0 auto;
+}
+.how__grid {
+  display: grid; grid-template-columns: 1fr; gap: 18px;
+}
+.how__card {
+  position: relative;
+  background: white; color: var(--color-navy);
+  border: 3px solid #000f1a; border-radius: 10px;
+  padding: 22px 22px 24px;
+  box-shadow: 5px 5px 0 #000f1a;
+  transition: transform 200ms, box-shadow 200ms;
+}
+.how__card:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 #000f1a; }
+.how__num {
+  font-family: var(--font-display);
+  font-size: 44px; line-height: 1;
+  color: var(--color-yellow);
+  text-shadow: 2px 2px 0 #000f1a;
+  margin-bottom: 4px;
+}
+.how__card h3 {
+  font-family: var(--font-ui); font-weight: 800;
+  font-size: 18px; letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-navy);
+  margin-bottom: 8px;
+}
+.how__card p {
+  font-family: var(--font-body); font-size: 14px;
+  line-height: 1.6; color: var(--color-gray-700);
+}
+.how__card::after {
+  content: ''; position: absolute;
+  top: -8px; right: -8px;
+  width: 22px; height: 22px;
+  background: var(--color-red);
+  border: 2.5px solid #000f1a;
+  border-radius: 50%;
+}
+@media (min-width: 600px) {
+  .how__grid { grid-template-columns: 1fr 1fr; gap: 22px; }
+}
+@media (min-width: 1024px) {
+  .how { padding: 96px 24px; }
+  .how__grid { grid-template-columns: repeat(4, 1fr); }
+  .how__earth { width: 170px; right: 4%; }
+  .how__rocket { width: 110px; left: 4%; top: 12%; }
+}
+
+/* ============================================================
+   GAME NIGHT
+   ============================================================ */
+.gn {
+  position: relative;
+  padding: 72px 20px;
+  background: var(--color-yellow);
+  color: var(--color-navy);
+  overflow: hidden;
+  border-top: 4px solid #000f1a;
+  border-bottom: 4px solid #000f1a;
+}
+.gn::before {
+  content: ''; position: absolute; inset: -30%; pointer-events: none;
+  background: repeating-conic-gradient(from 0deg, var(--color-yellow-dark) 0deg 8deg, #8a6a08 8deg 16deg);
+  opacity: 0.32;
+}
+.gn__inner {
+  position: relative; z-index: 2;
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr; gap: 24px;
+  align-items: center;
+  text-align: center;
+}
+.gn__sticker {
+  display: flex; justify-content: center;
+  position: relative; z-index: 2;
+}
+.gn__sticker img {
+  width: 200px;
+  filter: drop-shadow(4px 4px 0 #000f1a);
+}
+.gn__copy h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 7vw, 52px);
+  line-height: 1; color: var(--color-navy);
+  text-shadow: 3px 3px 0 var(--color-red);
+  margin-bottom: 14px;
+}
+.gn__copy p {
+  font-family: var(--font-body);
+  font-size: 16px; line-height: 1.6;
+  color: var(--color-navy);
+  max-width: 580px; margin: 0 auto 28px;
+}
+.gn__copy p strong {
+  background: var(--color-navy); color: var(--color-yellow);
+  padding: 1px 6px; border-radius: 3px;
+  font-family: var(--font-ui); font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.gn__ctas {
+  display: flex; flex-direction: column; gap: 12px; align-items: center;
+}
+@media (min-width: 768px) {
+  .gn { padding: 96px 24px; }
+  .gn__inner { grid-template-columns: auto 1fr; gap: 40px; text-align: left; }
+  .gn__copy p { margin: 0 0 28px; }
+  .gn__ctas { flex-direction: row; align-items: flex-start; }
+  .gn__sticker img { width: 260px; }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.foot {
+  position: relative;
+  padding: 64px 20px 28px;
+  background: var(--color-navy-dark);
+  color: white;
+  overflow: hidden;
+}
+.foot::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: var(--texture-halftone-light);
+  background-size: 10px 10px;
+  opacity: 0.6;
+}
+.foot__jupiter {
+  position: absolute; bottom: -40px; right: -40px;
+  width: 200px; opacity: 0.18;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+.foot__rocket {
+  position: absolute; top: 32px; right: 8%;
+  width: 130px; opacity: 0.85;
+  image-rendering: pixelated;
+  transform: rotate(45deg);
+  animation: float 3.5s ease-in-out infinite;
+  pointer-events: none;
+  filter: drop-shadow(3px 3px 0 rgba(0,0,0,0.4));
+}
+.foot__inner {
+  position: relative; z-index: 2;
+  max-width: 1100px; margin: 0 auto;
+}
+.foot__grid {
+  display: grid; grid-template-columns: 1fr; gap: 36px;
+  margin-bottom: 36px;
+}
+.foot__brand img { height: 110px; width: auto; margin-bottom: 16px; }
+.foot__brand p {
+  font-family: var(--font-body); font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  max-width: 280px;
+}
+.foot__title {
+  font-family: var(--font-pixel);
+  font-size: 10px; color: var(--color-yellow);
+  letter-spacing: 0.12em;
+  margin-bottom: 16px;
+}
+.foot__list { list-style: none; }
+.foot__list li {
+  font-family: var(--font-body); font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 10px;
+  line-height: 1.5;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.foot__list li .ico {
+  display: inline-block; min-width: 20px;
+  font-size: 14px;
+}
+.foot__social {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px;
+}
+.foot__social a {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px;
+  background: var(--color-navy);
+  border: 2.5px solid #000f1a;
+  border-radius: 6px;
+  box-shadow: 3px 3px 0 #000f1a;
+  font-family: var(--font-ui); font-weight: 700;
+  font-size: 13px; letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: white;
+  transition: transform 100ms, box-shadow 100ms;
+}
+.foot__social a:hover { transform: translate(1px,1px); box-shadow: 2px 2px 0 #000f1a; }
+.foot__social a.is-wpp { background: var(--color-green); }
+.foot__social a.is-ig { background: linear-gradient(135deg, var(--color-purple), var(--color-red)); }
+.foot__social svg { width: 18px; height: 18px; }
+.foot__bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 22px;
+  display: flex; flex-direction: column; gap: 10px;
+  align-items: center; justify-content: space-between;
+  text-align: center;
+}
+.foot__copy {
+  font-family: var(--font-pixel); font-size: 9px;
+  color: rgba(255,255,255,0.45); letter-spacing: 0.1em;
+}
+.foot__tag {
+  font-family: var(--font-ui); font-weight: 600; font-size: 11px;
+  color: var(--color-yellow); letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+@media (min-width: 768px) {
+  .foot { padding: 80px 24px 32px; }
+  .foot__grid { grid-template-columns: 1.2fr 1fr 1fr; gap: 48px; }
+  .foot__bottom { flex-direction: row; }
+}
+
+/* ============================================================
+   ACCESSIBILITY — Reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   CAROUSEL — Destaque de Jogos
+   ============================================================ */
+.carousel {
+  position: relative;
+  padding: 48px 0;
+  background: linear-gradient(180deg, var(--color-navy) 0%, #011a2d 100%);
+  overflow: hidden;
+}
+.carousel::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 80px 30px, rgba(242,191,39,0.35), transparent),
+    radial-gradient(1px 1px at 200px 80px, rgba(255,255,255,0.25), transparent),
+    radial-gradient(1.5px 1.5px at 340px 60px, rgba(4,157,217,0.4), transparent);
+  background-size: 400px 120px;
+  opacity: 0.5;
+}
+.carousel__head {
+  position: relative; z-index: 2;
+  text-align: center; margin-bottom: 24px;
+  padding: 0 20px;
+}
+.carousel__title {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 5vw, 34px);
+  line-height: 1.1; color: white;
+  text-shadow: 2px 2px 0 var(--color-red);
+  margin-top: 8px;
+}
+.carousel__title span { color: var(--color-yellow); }
+.carousel__sub {
+  font-family: var(--font-body); font-size: 13px;
+  color: rgba(255,255,255,0.5); margin-top: 8px;
+}
+.carousel__wrapper {
+  position: relative; z-index: 2;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+}
+.carousel__track {
+  display: flex; gap: 14px;
+  animation: carousel-scroll 35s linear infinite;
+  padding: 12px 0;
+  will-change: transform;
+}
+.carousel__track:hover { animation-play-state: paused; }
+@keyframes carousel-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ---- Card ---- */
+.carousel__card {
+  flex: 0 0 150px; min-width: 150px;
+  height: 220px;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  border: 2.5px solid #000f1a;
+  box-shadow: 4px 4px 0 #000f1a;
+  transition: transform 200ms cubic-bezier(.34,1.56,.64,1), box-shadow 200ms;
+}
+.carousel__card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 6px 10px 0 #000f1a;
+}
+.carousel__card-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  background: linear-gradient(135deg, #012030 0%, #023a56 100%);
+}
+/* Dark gradient overlay for text readability */
+.carousel__card::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(1,15,24,0.92) 0%,
+    rgba(1,15,24,0.6) 35%,
+    rgba(1,15,24,0.1) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  border-radius: 8px;
+}
+.carousel__card-body {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  z-index: 5;
+  padding: 10px 10px 12px;
+  display: flex; flex-direction: column;
+}
+.carousel__card-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.15;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  margin-bottom: 4px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.carousel__card-meta {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 6px;
+}
+.carousel__card-tag {
+  display: inline-block;
+  background: var(--color-yellow);
+  color: var(--color-navy);
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+/* Price badge top-right */
+.carousel__card-price {
+  position: absolute; top: 8px; right: 8px;
+  z-index: 10;
+  background: var(--color-red);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 800;
+  border: 1.5px solid #000f1a;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  line-height: 1;
+}
+/* CTA link after carousel */
+.carousel__cta {
+  position: relative; z-index: 2;
+  display: flex; justify-content: center;
+  margin-top: 20px; padding: 0 20px;
+}
+
+@media (min-width: 600px) {
+  .carousel { padding: 56px 0; }
+  .carousel__card { flex: 0 0 170px; min-width: 170px; height: 245px; }
+  .carousel__card-name { font-size: 15px; }
+}
+@media (min-width: 1024px) {
+  .carousel { padding: 64px 0; }
+  .carousel__card { flex: 0 0 200px; min-width: 200px; height: 280px; }
+  .carousel__card-name { font-size: 16px; }
+  .carousel__card-meta { font-size: 11px; }
+  .carousel__card-tag { font-size: 11px; }
+}
+
+/* Focus rings */
+a:focus-visible, button:focus-visible, .btn:focus-visible {
+  outline: 3px solid var(--color-yellow);
+  outline-offset: 3px;
+}
+</style>
+</head>
+<body>
+
+<!-- ======================== HEADER ======================== -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="#top" class="site-header__logo" aria-label="Ludonave — voltar ao topo">
+      <img src="../assets/logo%20icone.png" alt="Logo Ludonave: foguete-peão">
+      <span>LUDONAVE</span>
+    </a>
+    <nav class="site-header__nav" aria-label="Navegação principal">
+      <a href="#manual-de-voo">Como Alugar</a>
+      <a href="#missao">Por Que Alugar</a>
+      <a href="#game-night">Game Night</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a class="site-header__cta"
+       href="https://api.whatsapp.com/send?phone=5547997082864&text=Ol%C3%A1!%20Quero%20alugar%20um%20jogo%20da%20Ludonave"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Falar no WhatsApp">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.1.2-.3.2-.6.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.6-1.9-.1-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.4.1-.2 0-.3 0-.5s-.6-1.5-.9-2c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.4-.3.3-.9.9-.9 2.2 0 1.3 1 2.6 1.1 2.7.1.2 1.9 3 4.7 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.6-.7 1.9-1.3.2-.6.2-1.1.2-1.3 0-.1-.2-.2-.5-.3z"/><path d="M20.5 3.5C18.3 1.3 15.4 0 12.2 0 5.6 0 .2 5.4.2 12c0 2.1.6 4.2 1.6 6L0 24l6.2-1.6c1.7.9 3.6 1.4 5.5 1.4h.1c6.6 0 12-5.4 12-12 0-3.2-1.2-6.2-3.3-8.3zm-8.3 18.4c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4c-1-1.6-1.5-3.4-1.5-5.3 0-5.5 4.5-9.9 9.9-9.9 2.6 0 5.1 1 7 2.9 1.9 1.9 2.9 4.4 2.9 7-.1 5.4-4.5 9.9-10 9.9z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- ======================== HERO ======================== -->
+<section class="hero" aria-labelledby="hero-title">
+  <img class="hero__galaxy" src="../assets/6.png" alt="" aria-hidden="true" loading="eager">
+  <img class="hero__meteor" src="../assets/5.png" alt="" aria-hidden="true" loading="eager">
+
+  <div class="hero__inner">
+    <div class="hero__copy">
+      <span class="eyebrow">▶ MISSÃO 01 · ALUGUEL</span>
+      <h1 class="hero__title" id="hero-title">EMBARQUE NUMA AVENTURA COM <span class="accent">JOGOS DE TABULEIRO</span></h1>
+      <p class="hero__sub">
+        Na <strong>Ludonave</strong>, você aluga boardgames modernos com <strong>delivery</strong> e
+        <strong>retirada</strong> em Navegantes, Penha, Balneário Piçarras e Itajaí.
+        Escolha seu jogo e bora pra jogatina.
+      </p>
+      <div class="hero__ctas">
+        <a class="btn btn--primary"
+           href="https://ludonave.acervodejogos.com.br/"
+           target="_blank" rel="noopener noreferrer">
+          ▶ ALUGUE AGORA<span class="cursor-pixel" aria-hidden="true"></span>
+        </a>
+        <a class="btn btn--outline" href="#manual-de-voo">Ver como funciona</a>
+      </div>
+    </div>
+
+    <div class="hero__visual">
+      <img class="hero__saturn" src="../assets/3.png" alt="" aria-hidden="true" loading="eager">
+      <img class="hero__bluep" src="../assets/7.png" alt="" aria-hidden="true" loading="eager">
+      <img class="hero__mascot" src="../assets/mascote-pixel.png" alt="Mascote da Ludonave em estilo pixel-art segurando dados" loading="eager">
+    </div>
+  </div>
+</section>
+
+<!-- ======================== HOW IT WORKS ======================== -->
+<section class="how" id="manual-de-voo" aria-labelledby="how-title">
+  <img class="how__rocket" src="../assets/4.png" alt="" aria-hidden="true" loading="lazy">
+  <img class="how__earth" src="../assets/11.png" alt="" aria-hidden="true" loading="lazy">
+
+  <div class="how__inner">
+    <div class="how__head">
+      <span class="eyebrow">▶ MANUAL DE VOO</span>
+      <h2 id="how-title">COMO ALUGAR EM <span>4 PASSOS</span></h2>
+      <p>Processo simples, rápido e sem mistério. Do clique na tela até o jogo na sua mesa.</p>
+    </div>
+
+    <div class="how__grid">
+      <div class="how__card">
+        <div class="how__num">01</div>
+        <h3>🎲 Escolha o jogo</h3>
+        <p>Acesse nosso acervo online e escolha o jogo que você quer alugar. Temos títulos como
+          <strong>Dixit</strong>, <strong>Azul</strong>, <strong>Código Secreto</strong>,
+          <strong>Detetive</strong>, <strong>Zombicide</strong>, <strong>WAR</strong> e
+          <strong>Exploding Kittens</strong>.</p>
+      </div>
+
+      <div class="how__card">
+        <div class="how__num">02</div>
+        <h3>📝 Faça o pedido</h3>
+        <p>Cadastre-se no site, selecione o período do aluguel e finalize o pedido. Se preferir,
+          fale com a gente direto pelo WhatsApp.</p>
+      </div>
+
+      <div class="how__card">
+        <div class="how__num">03</div>
+        <h3>🚚 Receba ou retire</h3>
+        <p>Você escolhe: <strong>delivery</strong> em Navegantes, Penha, Balneário Piçarras e Itajaí,
+          ou <strong>retirada presencial</strong> em Gravatá (Navegantes).</p>
+      </div>
+
+      <div class="how__card">
+        <div class="how__num">04</div>
+        <h3>🏠 Jogue e devolva</h3>
+        <p>Aproveite o jogo pelo período contratado e devolva na data combinada — em delivery
+          ou na nossa base.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:36px;">
+      <a class="btn btn--yellow"
+         href="https://ludonave.acervodejogos.com.br/"
+         target="_blank" rel="noopener noreferrer">
+        🎲 ACESSAR O ACERVO
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== MISSION ======================== -->
+<section class="mission" id="missao" aria-labelledby="mission-title">
+  <div class="mission__inner">
+    <div class="mission__visual">
+      <img class="mission__planet" src="../assets/13.png" alt="" aria-hidden="true" loading="lazy">
+      <img class="mission__hero" src="../assets/mascote_comic.png" alt="Mascote astronauta da Ludonave em estilo comic" loading="lazy">
+      <img class="mission__meeple" src="../assets/9.png" alt="" aria-hidden="true" loading="lazy">
+    </div>
+
+    <div class="mission__copy">
+      <span class="eyebrow">▶ POR QUE ALUGAR</span>
+      <h2 id="mission-title">DIVERSÃO OFFLINE <span>SEM GASTAR UMA FORTUNA</span></h2>
+      <p>
+        Comprar boardgame moderno é caro — e ainda ocupa metade da estante. Com a
+        <strong>Ludonave</strong>, você joga o que quiser, paga só pelo período que vai usar
+        e devolve quando terminar. Acervo gigante, preço acessível e zero compromisso.
+      </p>
+
+      <a class="mission__count"
+         href="https://ludonave.acervodejogos.com.br/"
+         target="_blank" rel="noopener noreferrer"
+         aria-label="Ver os mais de 110 jogos no acervo">
+        +110<small>jogos no acervo →</small>
+      </a>
+
+      <div class="mission__bens">
+        <div class="mission__bem">
+          <span class="ico" aria-hidden="true">♟️</span>
+          <div>
+            <h4>Estratégia</h4>
+            <p><strong>WAR</strong>, <strong>Ticket to Ride</strong> e mais.</p>
+          </div>
+        </div>
+        <div class="mission__bem">
+          <span class="ico" aria-hidden="true">🎉</span>
+          <div>
+            <h4>Party</h4>
+            <p><strong>Telestrations</strong>, <strong>Coup</strong> e <strong>Bandido</strong>.</p>
+          </div>
+        </div>
+        <div class="mission__bem">
+          <span class="ico" aria-hidden="true">🃏</span>
+          <div>
+            <h4>Cartas</h4>
+            <p><strong>Exploding Kittens</strong> e <strong>Trio</strong>.</p>
+          </div>
+        </div>
+        <div class="mission__bem">
+          <span class="ico" aria-hidden="true">🤝</span>
+          <div>
+            <h4>Cooperativo</h4>
+            <p><strong>Zombicide</strong> e mais títulos pra jogar em equipe.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== CAROUSEL ======================== -->
+<section class="carousel" id="destaque" aria-labelledby="carousel-title">
+  <div class="carousel__head">
+    <div class="eyebrow">▶ ACERVO</div>
+    <h2 id="carousel-title" class="carousel__title">Jogos em <span>Destaque</span></h2>
+    <p class="carousel__sub">+110 títulos no acervo · A partir de R$ 15</p>
+  </div>
+
+  <div class="carousel__wrapper">
+    <div class="carousel__track">
+      <!-- 1. Azul -->
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer">
+        <img class="carousel__card-img" src="../assets/games/azul.png" alt="Azul" loading="lazy">
+        <div class="carousel__card-price">R$ 35</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Azul</div>
+          <div class="carousel__card-meta">👥 2–4 · ⏱ 45 min</div>
+          <span class="carousel__card-tag">Estratégia</span>
+        </div>
+      </a>
+      <!-- 2. Zombicide -->
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer">
+        <img class="carousel__card-img" src="../assets/games/detetive.jpg" alt="Detetive" loading="lazy">
+        <div class="carousel__card-price">R$ 25</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Detetive</div>
+          <div class="carousel__card-meta">👥 3–8 · ⏱ 60 min</div>
+          <span class="carousel__card-tag">Investigação</span>
+        </div>
+      </a>
+      <!-- 3. Dixit -->
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer">
+        <img class="carousel__card-img" src="../assets/games/dixit.png" alt="Dixit" loading="lazy">
+        <div class="carousel__card-price">R$ 25</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Dixit</div>
+          <div class="carousel__card-meta">👥 3–8 · ⏱ 30 min</div>
+          <span class="carousel__card-tag">Party</span>
+        </div>
+      </a>
+      <!-- 4. WAR -->
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer">
+        <img class="carousel__card-img" src="../assets/games/war.jpg" alt="WAR" loading="lazy">
+        <div class="carousel__card-price">R$ 20</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">WAR</div>
+          <div class="carousel__card-meta">👥 3–6 · ⏱ 120 min</div>
+          <span class="carousel__card-tag">Estratégia</span>
+        </div>
+      </a>
+      <!-- 5. Ticket to Ride -->
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer">
+        <img class="carousel__card-img" src="../assets/games/ticket-to-ride.jpg" alt="Ticket to Ride" loading="lazy">
+        <div class="carousel__card-price">R$ 35</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Ticket to Ride</div>
+          <div class="carousel__card-meta">👥 2–5 · ⏱ 60 min</div>
+          <span class="carousel__card-tag">Família</span>
+        </div>
+      </a>
+      <!-- 6. Coup -->
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer">
+        <img class="carousel__card-img" src="../assets/games/coup.jpg" alt="Coup" loading="lazy">
+        <div class="carousel__card-price">R$ 15</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Coup</div>
+          <div class="carousel__card-meta">👥 2–6 · ⏱ 15 min</div>
+          <span class="carousel__card-tag">Cartas</span>
+        </div>
+      </a>
+      <!-- 7. Carcassonne -->
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer">
+        <img class="carousel__card-img" src="../assets/games/carcassonne.jpg" alt="Carcassonne" loading="lazy">
+        <div class="carousel__card-price">R$ 25</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Carcassonne</div>
+          <div class="carousel__card-meta">👥 2–5 · ⏱ 45 min</div>
+          <span class="carousel__card-tag">Estratégia</span>
+        </div>
+      </a>
+      <!-- 8. Exploding Kittens -->
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer">
+        <img class="carousel__card-img" src="../assets/games/exploding-kittens.webp" alt="Exploding Kittens" loading="lazy">
+        <div class="carousel__card-price">R$ 20</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Exploding Kittens</div>
+          <div class="carousel__card-meta">👥 2–5 · ⏱ 15 min</div>
+          <span class="carousel__card-tag">Party</span>
+        </div>
+      </a>
+      <!-- 9. 7 Wonders -->
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer">
+        <img class="carousel__card-img" src="../assets/games/7wonders.jpg" alt="7 Wonders" loading="lazy">
+        <div class="carousel__card-price">R$ 30</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">7 Wonders</div>
+          <div class="carousel__card-meta">👥 3–7 · ⏱ 30 min</div>
+          <span class="carousel__card-tag">Estratégia</span>
+        </div>
+      </a>
+      <!-- 10. Código Secreto -->
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer">
+        <img class="carousel__card-img" src="../assets/games/codigo-secreto.webp" alt="Código Secreto" loading="lazy">
+        <div class="carousel__card-price">R$ 20</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Código Secreto</div>
+          <div class="carousel__card-meta">👥 2–8 · ⏱ 15 min</div>
+          <span class="carousel__card-tag">Party</span>
+        </div>
+      </a>
+
+      <!-- ===== DUPLICADOS para loop seamless ===== -->
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+        <img class="carousel__card-img" src="../assets/games/azul.png" alt="" loading="lazy">
+        <div class="carousel__card-price">R$ 35</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Azul</div>
+          <div class="carousel__card-meta">👥 2–4 · ⏱ 45 min</div>
+          <span class="carousel__card-tag">Estratégia</span>
+        </div>
+      </a>
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+        <img class="carousel__card-img" src="../assets/games/zombicide.jpg" alt="" loading="lazy">
+        <div class="carousel__card-price">R$ 40</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Zombicide</div>
+          <div class="carousel__card-meta">👥 1–6 · ⏱ 60 min</div>
+          <span class="carousel__card-tag">Cooperativo</span>
+        </div>
+      </a>
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+        <img class="carousel__card-img" src="../assets/games/dixit.png" alt="" loading="lazy">
+        <div class="carousel__card-price">R$ 25</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Dixit</div>
+          <div class="carousel__card-meta">👥 3–8 · ⏱ 30 min</div>
+          <span class="carousel__card-tag">Party</span>
+        </div>
+      </a>
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+        <img class="carousel__card-img" src="../assets/games/war.jpg" alt="" loading="lazy">
+        <div class="carousel__card-price">R$ 20</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">WAR</div>
+          <div class="carousel__card-meta">👥 3–6 · ⏱ 120 min</div>
+          <span class="carousel__card-tag">Estratégia</span>
+        </div>
+      </a>
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+        <img class="carousel__card-img" src="../assets/games/ticket-to-ride.jpg" alt="" loading="lazy">
+        <div class="carousel__card-price">R$ 35</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Ticket to Ride</div>
+          <div class="carousel__card-meta">👥 2–5 · ⏱ 60 min</div>
+          <span class="carousel__card-tag">Família</span>
+        </div>
+      </a>
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+        <img class="carousel__card-img" src="../assets/games/coup.jpg" alt="" loading="lazy">
+        <div class="carousel__card-price">R$ 15</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Coup</div>
+          <div class="carousel__card-meta">👥 2–6 · ⏱ 15 min</div>
+          <span class="carousel__card-tag">Cartas</span>
+        </div>
+      </a>
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+        <img class="carousel__card-img" src="../assets/games/carcassonne.jpg" alt="" loading="lazy">
+        <div class="carousel__card-price">R$ 25</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Carcassonne</div>
+          <div class="carousel__card-meta">👥 2–5 · ⏱ 45 min</div>
+          <span class="carousel__card-tag">Estratégia</span>
+        </div>
+      </a>
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+        <img class="carousel__card-img" src="../assets/games/exploding-kittens.webp" alt="" loading="lazy">
+        <div class="carousel__card-price">R$ 20</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Exploding Kittens</div>
+          <div class="carousel__card-meta">👥 2–5 · ⏱ 15 min</div>
+          <span class="carousel__card-tag">Party</span>
+        </div>
+      </a>
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+        <img class="carousel__card-img" src="../assets/games/7wonders.jpg" alt="" loading="lazy">
+        <div class="carousel__card-price">R$ 30</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">7 Wonders</div>
+          <div class="carousel__card-meta">👥 3–7 · ⏱ 30 min</div>
+          <span class="carousel__card-tag">Estratégia</span>
+        </div>
+      </a>
+      <a class="carousel__card" href="https://ludonave.acervodejogos.com.br/" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+        <img class="carousel__card-img" src="../assets/games/codigo-secreto.webp" alt="" loading="lazy">
+        <div class="carousel__card-price">R$ 20</div>
+        <div class="carousel__card-body">
+          <div class="carousel__card-name">Código Secreto</div>
+          <div class="carousel__card-meta">👥 2–8 · ⏱ 15 min</div>
+          <span class="carousel__card-tag">Party</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="carousel__cta">
+    <a class="btn btn--yellow"
+       href="https://ludonave.acervodejogos.com.br/"
+       target="_blank" rel="noopener noreferrer">
+      🎲 VER ACERVO COMPLETO
+    </a>
+  </div>
+</section>
+
+<!-- ======================== GAME NIGHT ======================== -->
+<section class="gn" id="game-night" aria-labelledby="gn-title">
+  <div class="gn__inner">
+    <div class="gn__sticker">
+      <img src="../assets/mascote-cabeca.png" alt="Sticker da cabeça do mascote astronauta da Ludonave" loading="lazy">
+    </div>
+
+    <div class="gn__copy">
+      <span class="eyebrow" style="color:var(--color-red);">▶ GAME NIGHT</span>
+      <h2 id="gn-title">BORA TRANSFORMAR A NOITE EM <span>GAME NIGHT?</span></h2>
+      <p>
+        Reúne a tripulação, aperta <strong>START</strong> e deixa a Ludonave cuidar do resto.
+        Sextou virou jogatina — bote um <strong>Zombicide</strong> na mesa, mande um
+        <strong>Código Secreto</strong> pra esquentar e fecha com <strong>Dixit</strong> pra
+        ninguém querer ir embora.
+      </p>
+      <div class="gn__ctas">
+        <a class="btn btn--wpp"
+           href="https://api.whatsapp.com/send?phone=5547997082864&text=Ol%C3%A1!%20Quero%20alugar%20um%20jogo%20da%20Ludonave"
+           target="_blank" rel="noopener noreferrer">
+          📱 CHAMAR NO WHATSAPP
+        </a>
+        <a class="btn btn--primary"
+           href="https://ludonave.acervodejogos.com.br/"
+           target="_blank" rel="noopener noreferrer">
+          🎲 VER ACERVO COMPLETO
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== FOOTER ======================== -->
+<footer class="foot" id="contato">
+  <img class="foot__jupiter" src="../assets/12.png" alt="" aria-hidden="true" loading="lazy">
+  <img class="foot__rocket" src="../assets/4.png" alt="" aria-hidden="true" loading="lazy">
+
+  <div class="foot__inner">
+    <div class="foot__grid">
+      <div class="foot__brand">
+        <img src="../assets/LOGO_COMPLETA.png" alt="Ludonave">
+        <p>Aluguel de jogos de tabuleiro modernos · Litoral Norte de Santa Catarina.</p>
+      </div>
+
+      <div>
+        <div class="foot__title">▶ A BASE</div>
+        <ul class="foot__list">
+          <li><span class="ico">📍</span> Gravatá — Navegantes / SC</li>
+          <li><span class="ico">🕒</span> Seg a Sáb · 10h às 20h</li>
+          <li><span class="ico">🌐</span> Atendemos Navegantes, Penha, Balneário Piçarras e Itajaí</li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="foot__title">▶ EMBARQUE</div>
+        <div class="foot__social">
+          <a class="is-wpp"
+             href="https://api.whatsapp.com/send?phone=5547997082864&text=Ol%C3%A1!%20Quero%20alugar%20um%20jogo%20da%20Ludonave"
+             target="_blank" rel="noopener noreferrer"
+             aria-label="Falar no WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 3.5C18.3 1.3 15.4 0 12.2 0 5.6 0 .2 5.4.2 12c0 2.1.6 4.2 1.6 6L0 24l6.2-1.6c1.7.9 3.6 1.4 5.5 1.4h.1c6.6 0 12-5.4 12-12 0-3.2-1.2-6.2-3.3-8.3zm-8.3 18.4c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4c-1-1.6-1.5-3.4-1.5-5.3 0-5.5 4.5-9.9 9.9-9.9 2.6 0 5.1 1 7 2.9 1.9 1.9 2.9 4.4 2.9 7-.1 5.4-4.5 9.9-10 9.9z"/><path d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.3-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.1.2-.3.2-.6.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.6-1.9-.1-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.4.1-.2 0-.3 0-.5s-.6-1.5-.9-2c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.4-.3.3-.9.9-.9 2.2 0 1.3 1 2.6 1.1 2.7.1.2 1.9 3 4.7 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.6-.7 1.9-1.3.2-.6.2-1.1.2-1.3 0-.1-.2-.2-.5-.3z"/></svg>
+            WhatsApp
+          </a>
+          <a class="is-ig"
+             href="https://instagram.com/ludonave.bg"
+             target="_blank" rel="noopener noreferrer"
+             aria-label="Seguir no Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @ludonave.bg
+          </a>
+          <a href="https://ludonave.acervodejogos.com.br/"
+             target="_blank" rel="noopener noreferrer"
+             aria-label="Acessar o acervo de jogos">
+            🎲 ACERVO
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot__bottom">
+      <div class="foot__copy">© 2026 LUDONAVE</div>
+      <div class="foot__tag">Toda partida começa aqui ▶</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
